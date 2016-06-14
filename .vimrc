@@ -8,12 +8,31 @@
 "
 " Secitons:
 "   -> General
-"   -> 
+"   -> VIM User Interface
+"   ->
+"   ->
+""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+""""""""""""""""""""""""""""""""""""""""""""""
+" Leader
+let mapleader = ","
 let g:mapleader = ","
 
 " Fast saving
-nmap <leader>w :w!<cr>
+nmap <Leader>s :w!<cr>
 noremap <C-Z> :update<CR>
+
+" Sets how many lines of history VIM has to remember
+set history=700
+
+" Enable filetype plugins
+filetype plugin indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
 
 " Automatic reloading of .vimrc
 autocmd! bufwritepost .vimrc source %
@@ -21,6 +40,40 @@ autocmd! bufwritepost .vimrc source %
 " Quick quit command
 nmap <Leader>e :quit<CR> " Quit current window
 nmap <Leader>E :qa!<CR> " Quit all windows
+
+""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM User Interface
+""""""""""""""""""""""""""""""""""""""""""""""
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+" Turn on the WILD menu
+set wildmenu
+
+" Always show current position
+set ruler
+
+" A buffer becomes hidden when it is abandoned
+set hid
+
+" Make search case insensitive
+" Ignore case when searching 
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" HighLight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" Don't redraw while executing macros 
+set lazyredraw
+
+" For regular expressions turn magic on
+set magic
 
 " bind Ctrl+<movement> keys to move around the windows
 map <c-j> <c-w>j
@@ -41,7 +94,6 @@ vnoremap > >gv " better indentation
 
 set nocompatible
 filetype off
-filetype plugin indent on
 syntax on
 
 " Show line numbers and length
@@ -57,7 +109,6 @@ vmap Q gq
 nmap Q gqap
 
 " Useful settings
-set history=700
 set undolevels=700
 set tabstop=4
 set softtabstop=4
@@ -70,15 +121,8 @@ set showmatch
 set backspace=2
 set autoindent
 set textwidth=100
-set ruler
 set background=dark
 set clipboard=unnamed
-
-" Make search case insensitive
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
 
 " Set the runtime path to include Vundle and initialized
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -88,7 +132,6 @@ Plugin 'VundleVim/Vundle.vim'
 
 " My Bundles
 Plugin 'tpope/vim-fugitive'
-Plugin 'Valloric/YouCompleteMe' " completion
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'plasticboy/vim-markdown'
@@ -105,11 +148,22 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'klen/python-mode'
 Plugin 'airblade/vim-gitgutter' " show git diff
+Plugin 'ervandew/supertab'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'valloric/vim-indent-guides'
+Plugin 'shougo/neocomplete.vim'
+Plugin 'briancollins/vim-jst'
+Plugin 'majutsushi/tagbar'
+Plugin 'tpope/vim-surround'
+Plugin 'moll/vim-node'
 
 " Color Schemes
 Plugin 'git@github.com:fugalh/desert.vim.git'
 
 call vundle#end()
+
+" Tabbar
+nmap <C-t> :TagbarToggle<CR>
 
 " Use the desert color scheme
 colorscheme desert
@@ -140,6 +194,19 @@ let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
 let NERDTreeMinimalUI=1
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
+
+" NerdTree git
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
 
 "powerline
 set guifont=Inconsolata\ for\ Powerline:h15
