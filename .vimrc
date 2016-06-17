@@ -21,6 +21,9 @@
 let mapleader = ","
 let g:mapleader = ","
 
+nmap <c-a> 0
+nmap <c-e> $
+
 " Fast saving
 nmap <Leader>s :w!<cr>
 noremap <C-Z> :update<CR>
@@ -156,6 +159,7 @@ Plugin 'briancollins/vim-jst'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-surround'
 Plugin 'moll/vim-node'
+Plugin 'dyng/ctrlsf.vim'
 
 " Color Schemes
 Plugin 'git@github.com:fugalh/desert.vim.git'
