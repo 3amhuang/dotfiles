@@ -95,6 +95,8 @@ vnoremap <Leader>s :sort<CR>
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
 
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+
 set nocompatible
 filetype off
 syntax on
@@ -162,16 +164,32 @@ Plugin 'moll/vim-node'
 Plugin 'dyng/ctrlsf.vim'
 
 " Color Schemes
-Plugin 'git@github.com:fugalh/desert.vim.git'
+Plugin 'altercation/vim-colors-solarized'
 
 call vundle#end()
 
 " Tabbar
 nmap <C-t> :TagbarToggle<CR>
 
-" Use the desert color scheme
-colorscheme desert
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Ctrlp
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+
+" Use the solarized color scheme
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
 
 au BufNewFile,BufRead *.py
 \ set tabstop=4 |
