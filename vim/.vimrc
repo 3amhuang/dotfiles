@@ -4,7 +4,7 @@
 "       3amhuang@gmail.com
 "
 " Version:
-"       1.0 - 10/04/16 12:16:10
+"       0.1.0 - 29/05/17 02:41:10
 "
 " Secitons:
 "   -> General
@@ -101,6 +101,8 @@ filetype off
 syntax on
 set guifont=DejaVu\ Sans\ Mono\ Bold\ Nerd\ Font\ Complete:h14
 set encoding=utf8
+set fencs=utf-8
+
 
 " Show line numbers and length
 set number " show line numbers
@@ -153,9 +155,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'klen/python-mode'
-Plugin 'airblade/vim-gitgutter' " show git diff
+Plugin 'airblade/vim-gitgutter'
 Plugin 'ervandew/supertab'
-Plugin 'kchmck/vim-coffee-script'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'shougo/neocomplete.vim'
 Plugin 'briancollins/vim-jst'
@@ -169,11 +170,54 @@ Plugin 'eslint/eslint'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'google/vim-searchindex'
 Plugin 'itchyny/lightline.vim'
+Plugin 'posva/vim-vue'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'marijnh/tern_for_vim'
 
 " Color Schemes
 Plugin 'google/vim-colorscheme-primary'
 
 call vundle#end()
+
+" YouCompleteMe
+set completeopt=longest,menu
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <F6> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
+inoremap <leader><leader> <C-x><C-o>
+
+let g:ycm_global_ycm_extra_conf="~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+let g:ycm_confirm_extra_conf=0
+let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_collect_identifiers_from_comments_and_strings = 0
+let g:ycm_min_num_of_chars_for_completion=2
+let g:ycm_cache_omnifunc=0
+let g:ycm_seed_identifiers_with_syntax=1	
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar' : 1,
+      \ 'nerdtree' : 1,
+      \}
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_key_invoke_completion = '<M-;>'
+let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
+
+" Python-mode
+let g:pymode_python = 'python3'
+let g:pymode_trim_whitespaces = 1
+let g:pymode_options_max_line_length = 79
+let g:pymode_folding = 1
+let g:pymode_lint_on_write = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_print_as_function = 0
+let g:pymode_syntax_highlight_self = g:pymode_syntax_all
 
 " Tabbar
 nmap <C-t> :TagbarToggle<CR>
@@ -206,15 +250,13 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 
 au BufNewFile,BufRead *.py
-\ set tabstop=2 |
-\ set softtabstop=2 |
-\ set shiftwidth=2 |
+\ set tabstop=4 |
+\ set softtabstop=4 |
+\ set shiftwidth=4 |
 \ set textwidth=79 |
 \ set expandtab |
 \ set autoindent |
 \ set fileformat=unix 
-
-let python_highlight_all=1
 
 " NerdTree{
 " Ctrl+N 打开/关闭
@@ -244,11 +286,11 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 
-"Emmet
+" Emmet
 let g:user_emmet_install_global = 0
-autocmd FileType html,css,js EmmetInstall
+autocmd FileType html,css,js,jsx,vue EmmetInstall
 
-"javascript
+" JavaScript
 let javascript_enable_domhtmlcss = 1
 
 "Indent-guides
