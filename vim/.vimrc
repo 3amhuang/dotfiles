@@ -143,12 +143,16 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
+Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'suan/vim-instant-markdown'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'tpope/vim-commentary'
 Plugin 'mattn/emmet-vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'raimondi/delimitmate'
 Plugin 'nvie/vim-flake8'
@@ -157,8 +161,6 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'klen/python-mode'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ervandew/supertab'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'shougo/neocomplete.vim'
 Plugin 'briancollins/vim-jst'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-surround'
@@ -173,6 +175,7 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'posva/vim-vue'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'marijnh/tern_for_vim'
+Plugin 'nathanaelkane/vim-indent-guides'
 
 " Color Schemes
 Plugin 'google/vim-colorscheme-primary'
@@ -188,29 +191,43 @@ inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
 inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <F6> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
+nnoremap <F4> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
 inoremap <leader><leader> <C-x><C-o>
 
 let g:ycm_global_ycm_extra_conf="~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
-let g:ycm_confirm_extra_conf=0
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_collect_identifiers_from_comments_and_strings = 0
-let g:ycm_min_num_of_chars_for_completion=2
-let g:ycm_cache_omnifunc=0
+let g:ycm_confirm_extra_conf = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_min_num_of_chars_for_completion=1
+let g:ycm_cache_omnifunc=1
 let g:ycm_seed_identifiers_with_syntax=1	
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
-      \ 'nerdtree' : 1,
       \}
-let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_select_completion = ['<tab>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_key_invoke_completion = '<M-;>'
+let g:ycm_key_invoke_completion = ''
 let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
 
 " Python-mode
 let g:pymode_python = 'python3'
+let g:pymode_rope_complete_on_dot = 0
 let g:pymode_trim_whitespaces = 1
 let g:pymode_options_max_line_length = 79
 let g:pymode_folding = 1
@@ -227,6 +244,13 @@ syntax enable
 set t_Co=256
 set background=dark
 colorscheme primary
+
+" Indent Guides
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=yellow ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+let g:indent_guides_start_level = 1
+let g:indent_guides_guide_size = 1
 
 " syntastic
 set statusline+=%#warningmsg#
@@ -259,16 +283,11 @@ au BufNewFile,BufRead *.py
 \ set fileformat=unix 
 
 " NerdTree{
-" Ctrl+N 打开/关闭
 map <C-n> :NERDTreeToggle<CR>
-" 当不带参数打开Vim时自动加载项目树
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" 当所有文件关闭时关闭项目树窗格
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-" 不显示这些文件
 let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
-" 不显示项目树上额外的信息，例如帮助、提示什么的
 let NERDTreeMinimalUI=1
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
@@ -293,14 +312,8 @@ autocmd FileType html,css,js,jsx,vue EmmetInstall
 " JavaScript
 let javascript_enable_domhtmlcss = 1
 
-"Indent-guides
-let g:indent_guides_auto_colors = 0
-let g:indent_guides_guide_size = 1
-let g:indent_guides_start_level = 2
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=yellow ctermbg=4
-hi IndentGuidesOdd ctermbg=black
-hi IndentGuidesEven ctermbg=darkgrey
+" JavaScript Lib
+let g:used_javascript_libs = 'underscore,jquery,react,flux,chai,jasmine,ramda,vue,d3'
 
 if ! has('gui_running')
     set ttimeoutlen=10
