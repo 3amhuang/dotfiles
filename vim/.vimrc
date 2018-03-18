@@ -132,6 +132,7 @@ set autoindent
 set textwidth=100
 set background=dark
 set clipboard=unnamed
+set shell=bash\ -i
 
 " Set the runtime path to include Vundle and initialized
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -260,8 +261,9 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:loaded_syntastic_html_eslint_checker = 1
 
+let g:loaded_syntastic_html_eslint_checker = 1
+let g:syntastic_python_checkers = ['pyflakes']
 let g:syntastic_javascript_checkers = ["exlint"]
 let g:syntastic_html_javascript_exec = 'exlint'
 let g:syntastic_html_checkers = ['html']
